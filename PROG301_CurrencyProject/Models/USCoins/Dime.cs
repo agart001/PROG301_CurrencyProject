@@ -9,9 +9,10 @@ namespace PROG301_CurrencyProject.Models.USCoins
 {
     public class Dime : USCoin
     {
-        public Dime()
+        public Dime() { }
+
+        public Dime(USCoinMintMark mark) : base(mark)
         {
-            Value = USCoinValueDict[this];
         }
     }
 }

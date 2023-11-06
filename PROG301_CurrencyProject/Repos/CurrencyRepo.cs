@@ -14,6 +14,11 @@ namespace PROG301_CurrencyProject.Repos
     {
         public List<ICoin> Coins { get; set; }
 
+        public CurrencyRepo()
+        {
+            Coins = new List<ICoin>();
+        }
+
         public string About()
         {
             throw new NotImplementedException();
@@ -38,16 +43,25 @@ namespace PROG301_CurrencyProject.Repos
         #region Make Change
         public ICurrencyRepo MakeChange(double Amount)
         {
-            ICurrencyRepo repo = new CurrencyRepo();
-            List<ICoin> coins = CoinValsByType(this.GetType());
+            ICurrencyRepo repo = Activator.CreateInstance(this.GetType()) as ICurrencyRepo;
+            List<Coin> coins = CoinValsByType(this.GetType()).Cast<Coin>().ToList();
+
+            coins.Sort((coin1, coin2) => -coin1.Value.CompareTo(coin2.Value));
+
+            int amountInCents = (int)(Amount * 100);
 
             foreach (var coin in coins)
             {
-                Coin actual = (Coin)coin;
-                while (Amount >= actual.Value)
+                int coinValueInCents = (int)(coin.Value * 100);
+
+                while (amountInCents >= coinValueInCents)
                 {
+                    if(amountInCents <= 0)
+                    {
+                        break;
+                    }
                     repo.Coins.Add(coin);
-                    Amount -= actual.Value;
+                    amountInCents -= coinValueInCents;
                 }
             }
 
@@ -56,24 +70,27 @@ namespace PROG301_CurrencyProject.Repos
 
         public ICurrencyRepo MakeChange(double AmountTendered, double TotalCost)
         {
-            if (AmountTendered < TotalCost)
-            {
-                Console.WriteLine("Error: Amount tendered is less than the total cost.");
-                return null; // You may want to handle this error case differently
-            }
-
             double changeAmount = AmountTendered - TotalCost;
 
-            ICurrencyRepo repo = new CurrencyRepo();
-            List<ICoin> coins = CoinValsByType(this.GetType());
+            ICurrencyRepo repo = Activator.CreateInstance(this.GetType()) as ICurrencyRepo;
+            List<Coin> coins = CoinValsByType(this.GetType()).Cast<Coin>().ToList();
+
+            coins.Sort((coin1, coin2) => -coin1.Value.CompareTo(coin2.Value));
+
+            int amountInCents = (int)(changeAmount * 100);
 
             foreach (var coin in coins)
             {
-                Coin actual = (Coin)coin;
-                while (changeAmount >= actual.Value)
+                int coinValueInCents = (int)(coin.Value * 100);
+
+                while (amountInCents >= coinValueInCents)
                 {
+                    if(amountInCents <= 0)
+                    {
+                        break;
+                    }
                     repo.Coins.Add(coin);
-                    changeAmount -= actual.Value;
+                    amountInCents -= coinValueInCents;
                 }
             }
 
@@ -82,9 +99,9 @@ namespace PROG301_CurrencyProject.Repos
         #endregion
 
         #region Create Change
-        public ICurrencyRepo CreateChange(double Amount) => MakeChange(Amount);
+        public virtual ICurrencyRepo CreateChange(double Amount) => MakeChange(Amount);
 
-        public ICurrencyRepo CreateChange(double AmountTendered, double TotalCost) => MakeChange(AmountTendered, TotalCost);
+        public virtual ICurrencyRepo CreateChange(double AmountTendered, double TotalCost) => MakeChange(AmountTendered, TotalCost);
         #endregion
     }
 }

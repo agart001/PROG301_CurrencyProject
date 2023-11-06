@@ -12,16 +12,20 @@ namespace PROG301_CurrencyProject.Utility
                 // Create an instance of the target class
                 object targetInstance = Activator.CreateInstance(targetType);
 
+                var methods = targetType.GetMethods();
+
                 // Get the method info
-                MethodInfo methodInfo = targetType.GetMethod(methodName);
+                MethodInfo methodInfo = methods.Where(m => m.Name == methodName).FirstOrDefault();
 
                 // Check if the method exists and is accessible
                 if (methodInfo != null && methodInfo.IsPublic)
                 {
                     // Invoke the method and return its result
                     object result = methodInfo.Invoke(targetInstance, methodParameters);
+                    var cast = (T)result;
 
-                    if (result is T)
+
+                    if (cast != null)
                     {
                         return (T)result;
                     }
@@ -48,16 +52,16 @@ namespace PROG301_CurrencyProject.Utility
             if (targetType.IsClass && targetType.GetConstructor(Type.EmptyTypes) != null)
             {
                 // Create an instance of the target class
-                object targetInstance = Activator.CreateInstance(targetType);
+                object? targetInstance = Activator.CreateInstance(targetType);
 
                 // Get the method info
-                MethodInfo methodInfo = targetType.GetMethod(methodName);
+                MethodInfo? methodInfo = targetType.GetMethod(methodName);
 
                 // Check if the method exists and is accessible
                 if (methodInfo != null && methodInfo.IsPublic)
                 {
                     // Invoke the method and return its result
-                    object result = methodInfo.Invoke(targetInstance, methodParameters);
+                    object? result = methodInfo.Invoke(targetInstance, methodParameters);
 
                     if (result is TResult castedResult)
                     {

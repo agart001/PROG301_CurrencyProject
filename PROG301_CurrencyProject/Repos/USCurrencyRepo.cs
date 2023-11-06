@@ -7,5 +7,6 @@ namespace PROG301_CurrencyProject.Repos
         public USCurrencyRepo()
         {
         }
+
     }
 }

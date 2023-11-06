@@ -15,17 +15,9 @@ namespace PROG301_CurrencyProject.Models
 
         public Coin()
         {
-
         }
 
-        public Coin(double value, string name, int year)
-        {
-            Value = value;
-            Name = name;
-            Year = year;
-        }
-
-        public string About()
+        public virtual string About()
         {
             throw new NotImplementedException();
         }

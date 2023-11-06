@@ -10,9 +10,11 @@ namespace PROG301_CurrencyProject.Models.USCoins
 {
     public class Penny : USCoin
     {
-        public Penny()
+        public Penny() { }
+        public Penny(USCoinMintMark mark) : base(mark)
         {
-            Value = USCoinValueDict[this];
+            Year = 2017;
         }
+
     }
 }

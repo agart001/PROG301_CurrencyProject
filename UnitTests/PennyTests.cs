@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static PROG301_CurrencyProject.Models.USCoin;
+using static PROG301_CurrencyProject.Statics.Currency.US;
 
 namespace UnitTests
 {
@@ -22,7 +22,9 @@ namespace UnitTests
             philiPenny = new Penny(USCoinMintMark.P);
             //Assert
             //D is the default mint mark
+            Assert.AreEqual(USCoinMintMark.D, p.MintMark);
             //Current Year is default year
+            Assert.AreEqual(DateTime.Now.Year, p.Year);
 
             Assert.AreEqual(USCoinMintMark.P, philiPenny.MintMark);
         }
@@ -43,11 +45,16 @@ namespace UnitTests
         {
             //Arrange
             Penny p;
+            string pennyAbout;
+
             //Act 
-            p = new Penny();
+            p = new Penny(USCoinMintMark.D);
+            pennyAbout = p.About();
+
             //Assert
+            Assert.AreEqual("US Penny is from 2017. It is worth $0.01. It was made in Denver", pennyAbout);
             //About output "US Penny is from 2017. It is worth $0.01. It was made in Denver"
         }
     }
 }
-}
+

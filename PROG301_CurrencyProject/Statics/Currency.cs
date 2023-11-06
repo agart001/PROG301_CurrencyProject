@@ -15,14 +15,24 @@ namespace PROG301_CurrencyProject.Statics
                 W
             }
 
-            public static Dictionary<USCoin, double> USCoinValueDict = new Dictionary<USCoin, double>
+            public static Dictionary<Type, double> USCoinValueDict = new Dictionary<Type, double>
             {
-                {new Penny(), .01},
-                {new Nickel(), .05},
-                {new Dime(), .10},
-                {new Quarter(), .25},
-                {new HalfDollar(), .50},
-                {new DollarCoin(), 1.00}
+                {typeof(Penny), .01},
+                {typeof(Nickel), .05},
+                {typeof(Dime), .10},
+                {typeof(Quarter), .25},
+                {typeof(HalfDollar), .50},
+                {typeof(DollarCoin), 1.00}
+            };
+
+            public static Dictionary<Type, string> USCoinNameDict = new Dictionary<Type, string>
+            {
+                {typeof(Penny), "Penny"},
+                {typeof(Nickel), "Nickel"},
+                {typeof(Dime), "Dime"},
+                {typeof(Quarter), "Quarter"},
+                {typeof(HalfDollar), "Half Dollar"},
+                {typeof(DollarCoin), "Dollar Coin"}
             };
         }
 

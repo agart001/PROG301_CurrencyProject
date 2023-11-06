@@ -32,7 +32,7 @@ namespace UnitTests
 
             //Assert
             Assert.AreEqual(Currency.US.USCoinMintMark.D, p.MintMark); //D is the default mint mark
-            Assert.AreEqual(System.DateTime.Now.Year, p.Year); //Current year is default year
+            Assert.AreEqual(DateTime.Now.Year, p.Year); //Current year is default year
 
         }
 
@@ -66,8 +66,9 @@ namespace UnitTests
         {
             //Arrange
             p = new Penny();
+
             //Act 
-            //nothing should have .01;
+
             //Assert
             Assert.AreEqual(.01, p.Value);
         }
@@ -76,7 +77,8 @@ namespace UnitTests
         public void USCoinPennyAbout()
         {
             //Arrange
-            p = new Penny();
+            p = new Penny(Currency.US.USCoinMintMark.D);
+
             //Act 
 
             //Assert

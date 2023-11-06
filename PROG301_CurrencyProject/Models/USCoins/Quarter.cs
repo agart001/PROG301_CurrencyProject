@@ -9,9 +9,9 @@ namespace PROG301_CurrencyProject.Models.USCoins
 {
     public class Quarter : USCoin
     {
-        public Quarter() 
+        public Quarter() { }
+        public Quarter(USCoinMintMark mark) : base(mark) 
         {
-            Value = USCoinValueDict[this];
         }
     }
 }

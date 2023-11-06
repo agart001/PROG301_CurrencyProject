@@ -27,12 +27,23 @@ namespace PROG301_CurrencyProject.Models
 
         public USCoin()
         {
+            MintMark = USCoinMintMark.D;
+            Year = DateTime.Now.Year;
 
+            Name = USCoinNameDict[GetType()];
+            Value = USCoinValueDict[GetType()];
         }
 
         public USCoin(USCoinMintMark mintMark)
         {
             MintMark = mintMark;
+
+            Name = USCoinNameDict[GetType()];
+            Value = USCoinValueDict[GetType()];
         }
+        public override string About() => 
+        $"US {Name} is from {Year}. " + 
+        $"It is worth {Value:C}. " +
+        $"It was made in {GetMintNameFromMark(MintMark)}";
     }
 }

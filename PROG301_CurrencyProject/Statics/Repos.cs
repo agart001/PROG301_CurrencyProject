@@ -37,7 +37,8 @@ namespace PROG301_CurrencyProject.Statics
             {
                 foreach(var kvp in USCoinValueDict)
                 {
-                    coins.Add(kvp.Key);
+                    ICoin coin = (ICoin)Activator.CreateInstance(kvp.Key);
+                    coins.Add(coin);
                 }
             }
         }

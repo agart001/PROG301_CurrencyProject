@@ -9,9 +9,9 @@ namespace PROG301_CurrencyProject.Models.USCoins
 {
     public class Nickel : USCoin
     {
-        public Nickel()
+        public Nickel() { }
+        public Nickel(USCoinMintMark mark) : base(mark)
         {
-            Value = USCoinValueDict[this];
         }
     }
 }

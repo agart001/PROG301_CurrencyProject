@@ -49,18 +49,6 @@ namespace PROG301_CurrencyProject.Models
         /// </summary>
         /// <param name="mark">The USCoinMintMark to translate into a name.</param>
         /// <returns>A string representing the name of the mint mark.</returns>
-        public static string GetMintNameFromMark(USCoinMintMark mark)
-        {
-            string name;
-            switch (mark)
-            {
-                case USCoinMintMark.P: name = "Philadelphia"; break;
-                case USCoinMintMark.D: name = "Denver"; break;
-                case USCoinMintMark.S: name = "San Francisco"; break;
-                case USCoinMintMark.W: name = "West Point"; break;
-                default: name = "not found"; break;
-            }
-            return name;
-        }
+        public static string GetMintNameFromMark(USCoinMintMark mark) => USCoinMintMarkDict[mark];
     }
 }

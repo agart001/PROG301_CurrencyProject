@@ -2,14 +2,12 @@
 using PROG301_CurrencyProject.Models.USCoins;
 using PROG301_CurrencyProject.Repos;
 using static PROG301_CurrencyProject.Utility.Method_Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTests
 {
+    /// <summary>
+    /// Unit tests for the <see cref="USCurrencyRepo"/> class.
+    /// </summary>
     [TestClass]
     public class USCurrencyRepoTests
     {
@@ -20,7 +18,9 @@ namespace UnitTests
         Quarter quarter;
         DollarCoin dollarCoin;
 
-
+        /// <summary>
+        /// Initializes an instance of the <see cref="USCurrencyRepoTests"/> class.
+        /// </summary>
         public USCurrencyRepoTests()
         {
             repo = new CurrencyRepo();
@@ -31,17 +31,20 @@ namespace UnitTests
             dollarCoin = new DollarCoin();
         }
 
+        /// <summary>
+        /// Test the AddCoin method of the <see cref="USCurrencyRepo"/> class.
+        /// </summary>
         [TestMethod]
         public void AddCoinTest()
         {
-            //Arrange
+            // Arrange
             int coinCountOrig, coinCountAfterPenny, coinCountAfterFiveMorePennies;
             int numPennies = 5;
 
+            double valueOrig, valueAfterPenny, valueAfterFiveMorePennies;
+            double valueAfterNickel, valueAfterDime, valueAfterQuarter, valueAfterDollar;
 
-            Double valueOrig, valueAfterPenny, valueAfterFiveMorePennies;
-            Double valueAfterNickel, valueAfterDime, valueAfterQuarter, valueAfterDollar;
-            //Act
+            // Act
             coinCountOrig = repo.GetCoinCount();
             valueOrig = repo.TotalValue();
 
@@ -65,8 +68,7 @@ namespace UnitTests
             repo.AddCoin(dollarCoin);
             valueAfterDollar = repo.TotalValue();
 
-
-            //Assert
+            // Assert
             Assert.AreEqual(coinCountOrig + 1, coinCountAfterPenny);
             Assert.AreEqual(coinCountAfterPenny + numPennies, coinCountAfterFiveMorePennies);
 
@@ -77,25 +79,24 @@ namespace UnitTests
             Assert.AreEqual(valueAfterNickel + dime.Value, valueAfterDime);
             Assert.AreEqual(valueAfterDime + quarter.Value, valueAfterQuarter);
             Assert.AreEqual(valueAfterQuarter + dollarCoin.Value, valueAfterDollar);
-
         }
 
-
+        /// <summary>
+        /// Test the RemoveCoin method of the <see cref="USCurrencyRepo"/> class.
+        /// </summary>
         [TestMethod]
         public void RemoveCoinTest()
         {
-
-            //Arrange
+            // Arrange
             int coinCountOrig, coinCountAfterPenny, coinCountAfterFiveMorePennies;
             int numPennies = 5;
 
+            double valueOrig, valueAfterPenny, valueAfterFiveMorePennies;
+            double valueAfterNickel, valueAfterDime, valueAfterQuarter, valueAfterDollar;
 
-            Double valueOrig, valueAfterPenny, valueAfterFiveMorePennies;
-            Double valueAfterNickel, valueAfterDime, valueAfterQuarter, valueAfterDollar;
+            repo = new USCurrencyRepo(); // Reset the repository
 
-            repo = new USCurrencyRepo();  //reset repo
-
-            //add some coins
+            // Add some coins
             repo.AddCoin(penny);
 
             for (int i = 0; i < numPennies; i++)
@@ -107,7 +108,7 @@ namespace UnitTests
             repo.AddCoin(quarter);
             repo.AddCoin(dollarCoin);
 
-            //Act
+            // Act
             coinCountOrig = repo.GetCoinCount();
             valueOrig = repo.TotalValue();
             repo.RemoveCoin(penny);
@@ -130,8 +131,7 @@ namespace UnitTests
             repo.RemoveCoin(dollarCoin);
             valueAfterDollar = repo.TotalValue();
 
-
-            //Assert
+            // Assert
             Assert.AreEqual(coinCountOrig - 1, coinCountAfterPenny);
             Assert.AreEqual(coinCountAfterPenny - numPennies, coinCountAfterFiveMorePennies);
 
@@ -142,58 +142,40 @@ namespace UnitTests
             Assert.AreEqual(valueAfterNickel - dime.Value, valueAfterDime);
             Assert.AreEqual(valueAfterDime - quarter.Value, valueAfterQuarter);
             Assert.AreEqual(valueAfterQuarter - dollarCoin.Value, valueAfterDollar);
-
         }
 
+        /// <summary>
+        /// Test the MakeChange method of the <see cref="USCurrencyRepo"/> class.
+        /// </summary>
         [TestMethod]
         public void MakeChangeTests()
         {
-            //Arrange
+            // Arrange
             Type UsCurRepo = typeof(USCurrencyRepo);
-            USCurrencyRepo changeOneQuatersOnHalfDollar, changeTwoDollars, changeOneDollarOneHalfDoller,
+            USCurrencyRepo changeOneQuartersOnHalfDollar, changeTwoDollars, changeOneDollarOneHalfDollar,
                changeOneDimeOnePenny, changeOneNickelOnePenny, changeFourPennies;
 
+            // Act
+            changeTwoDollars = (USCurrencyRepo)InvokeMethod<ICurrencyRepo>(UsCurRepo, "CreateChange", new object[] { 2.0 });
+            changeOneDollarOneHalfDollar = (USCurrencyRepo)InvokeMethod<ICurrencyRepo>(UsCurRepo, "CreateChange", new object[] { 1.5 });
+            changeOneQuartersOnHalfDollar = (USCurrencyRepo)InvokeMethod<ICurrencyRepo>(UsCurRepo, "CreateChange", new object[] { .75 });
 
-            //Act
-            changeTwoDollars = 
-            (USCurrencyRepo)InvokeMethod<ICurrencyRepo>(UsCurRepo, "CreateChange", new object[]{2.0});
-            changeOneDollarOneHalfDoller = 
-            (USCurrencyRepo)InvokeMethod<ICurrencyRepo>(UsCurRepo, "CreateChange", new object[]{1.5});
-            changeOneQuatersOnHalfDollar = 
-            (USCurrencyRepo)InvokeMethod<ICurrencyRepo>(UsCurRepo, "CreateChange", new object[]{.75});
+            changeOneDimeOnePenny = (USCurrencyRepo)InvokeMethod<ICurrencyRepo>(UsCurRepo, "CreateChange", new object[] { .11 });
+            changeOneNickelOnePenny = (USCurrencyRepo)InvokeMethod<ICurrencyRepo>(UsCurRepo, "CreateChange", new object[] { .06 });
+            changeFourPennies = (USCurrencyRepo)InvokeMethod<ICurrencyRepo>(UsCurRepo, "CreateChange", new object[] { .04 });
 
-            changeOneDimeOnePenny =
-            (USCurrencyRepo)InvokeMethod<ICurrencyRepo>(UsCurRepo, "CreateChange", new object[]{.11});
-            changeOneNickelOnePenny =
-            (USCurrencyRepo)InvokeMethod<ICurrencyRepo>(UsCurRepo, "CreateChange", new object[]{.06});
-            changeFourPennies =
-            (USCurrencyRepo)InvokeMethod<ICurrencyRepo>(UsCurRepo, "CreateChange", new object[]{.04});
-
-
-            /*
-            changeTwoDollars = (USCurrencyRepo)USCurrencyRepo.CreateChange(2.0);
-            changeOneDollarOneHalfDoller = (USCurrencyRepo)USCurrencyRepo.CreateChange(1.5);
-            changeOneQuatersOnHalfDollar = (USCurrencyRepo)USCurrencyRepo.CreateChange(.75);
-
-            changeOneDimeOnePenny = (USCurrencyRepo)USCurrencyRepo.CreateChange(.11);
-            changeOneNickelOnePenny = (USCurrencyRepo)USCurrencyRepo.CreateChange(.06);
-            changeFourPennies = (USCurrencyRepo)USCurrencyRepo.CreateChange(.04);
-            */
-
-
-            //Assert
+            // Assert
             Assert.AreEqual(changeTwoDollars.Coins.Count, 2);
             Assert.AreEqual(changeTwoDollars.Coins[0].GetType(), new DollarCoin().GetType());
             Assert.AreEqual(changeTwoDollars.Coins[1].GetType(), new DollarCoin().GetType());
 
-            Assert.AreEqual(changeOneDollarOneHalfDoller.Coins.Count, 2);
-            Assert.AreEqual(changeOneDollarOneHalfDoller.Coins[0].GetType(), new DollarCoin().GetType());
-            Assert.AreEqual(changeOneDollarOneHalfDoller.Coins[1].GetType(), new HalfDollar().GetType());
+            Assert.AreEqual(changeOneDollarOneHalfDollar.Coins.Count, 2);
+            Assert.AreEqual(changeOneDollarOneHalfDollar.Coins[0].GetType(), new DollarCoin().GetType());
+            Assert.AreEqual(changeOneDollarOneHalfDollar.Coins[1].GetType(), new HalfDollar().GetType());
 
-
-            Assert.AreEqual(changeOneQuatersOnHalfDollar.Coins.Count, 2);
-            Assert.AreEqual(changeOneQuatersOnHalfDollar.Coins[0].GetType(), new HalfDollar().GetType());
-            Assert.AreEqual(changeOneQuatersOnHalfDollar.Coins[1].GetType(), new Quarter().GetType());
+            Assert.AreEqual(changeOneQuartersOnHalfDollar.Coins.Count, 2);
+            Assert.AreEqual(changeOneQuartersOnHalfDollar.Coins[0].GetType(), new HalfDollar().GetType());
+            Assert.AreEqual(changeOneQuartersOnHalfDollar.Coins[1].GetType(), new Quarter().GetType());
 
             Assert.AreEqual(changeOneDimeOnePenny.Coins.Count, 2);
             Assert.AreEqual(changeOneDimeOnePenny.Coins[0].GetType(), new Dime().GetType());
@@ -203,13 +185,11 @@ namespace UnitTests
             Assert.AreEqual(changeOneNickelOnePenny.Coins[0].GetType(), new Nickel().GetType());
             Assert.AreEqual(changeOneNickelOnePenny.Coins[1].GetType(), new Penny().GetType());
 
-
             Assert.AreEqual(changeFourPennies.Coins.Count, 4);
             Assert.AreEqual(changeFourPennies.Coins[0].GetType(), new Penny().GetType());
             Assert.AreEqual(changeFourPennies.Coins[1].GetType(), new Penny().GetType());
             Assert.AreEqual(changeFourPennies.Coins[2].GetType(), new Penny().GetType());
             Assert.AreEqual(changeFourPennies.Coins[3].GetType(), new Penny().GetType());
-
         }
     }
 }

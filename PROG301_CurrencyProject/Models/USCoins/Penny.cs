@@ -1,20 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PROG301_CurrencyProject.Statics;
-using static PROG301_CurrencyProject.Statics.Currency.US;
+﻿using static PROG301_CurrencyProject.Statics.Currency.US;
 
 namespace PROG301_CurrencyProject.Models.USCoins
 {
+    /// <summary>
+    /// Represents a Penny, a type of US coin.
+    /// </summary>
     public class Penny : USCoin
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Penny"/> class with default values.
+        /// </summary>
         public Penny() { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Penny"/> class with the specified mint mark and a specific year.
+        /// </summary>
+        /// <param name="mark">The mint mark of the Penny.</param>
         public Penny(USCoinMintMark mark) : base(mark)
         {
             Year = 2017;
         }
-
     }
 }

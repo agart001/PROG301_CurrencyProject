@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static PROG301_CurrencyProject.Statics.Currency.US;
+﻿using static PROG301_CurrencyProject.Statics.Currency.US;
 
 namespace PROG301_CurrencyProject.Models.USCoins
 {
+    /// <summary>
+    /// Represents a Nickel, a type of US coin.
+    /// </summary>
     public class Nickel : USCoin
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Nickel"/> class with default values.
+        /// </summary>
         public Nickel() { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Nickel"/> class with the specified mint mark.
+        /// </summary>
+        /// <param name="mark">The mint mark of the Nickel.</param>
         public Nickel(USCoinMintMark mark) : base(mark)
         {
         }

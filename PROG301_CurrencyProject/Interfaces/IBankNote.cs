@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace PROG301_CurrencyProject.Interfaces
 {
+    /// <summary>
+    /// Represents an interface for defining a banknote with a year of issue.
+    /// </summary>
     public interface IBankNote
     {
+        /// <summary>
+        /// Gets or sets the year of issue of the banknote.
+        /// </summary>
         public int Year { get; set; }
     }
 }

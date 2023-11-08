@@ -1,6 +1,7 @@
 using PROG301_CurrencyProject.Interfaces;
 using PROG301_CurrencyProject.Repos;
 using static PROG301_CurrencyProject.Statics.Currency.US;
+using static PROG301_CurrencyProject.Utility.Method_Utils;
 
 namespace PROG301_CurrencyProject.Statics
 {
@@ -53,7 +54,7 @@ namespace PROG301_CurrencyProject.Statics
                 // Loop through USCoinValueDict and create ICoin objects for each coin type.
                 foreach (var kvp in USCoinValueDict)
                 {
-                    ICoin coin = (ICoin)Activator.CreateInstance(kvp.Key);
+                    ICoin coin = CreateInstance<ICoin>(kvp.Key);
                     coins.Add(coin);
                 }
             }

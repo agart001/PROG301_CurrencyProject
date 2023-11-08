@@ -1,6 +1,7 @@
 ﻿using PROG301_CurrencyProject.Interfaces;
 using PROG301_CurrencyProject.Models;
 using static PROG301_CurrencyProject.Statics.Repos.CurRep;
+using static PROG301_CurrencyProject.Utility.Method_Utils;
 
 namespace PROG301_CurrencyProject.Repos
 {
@@ -71,7 +72,7 @@ namespace PROG301_CurrencyProject.Repos
         /// <returns>A new currency repository with the change for the specified amount.</returns>
         public ICurrencyRepo MakeChange(double Amount)
         {
-            ICurrencyRepo repo = Activator.CreateInstance(this.GetType()) as ICurrencyRepo;
+            ICurrencyRepo repo = CreateInstance<ICurrencyRepo>(GetType());
             List<Coin> coins = CoinValsByType(this.GetType()).Cast<Coin>().ToList();
 
             // Sort the coins in descending order by value.
@@ -107,7 +108,8 @@ namespace PROG301_CurrencyProject.Repos
         {
             double changeAmount = AmountTendered - TotalCost;
 
-            ICurrencyRepo repo = Activator.CreateInstance(this.GetType()) as ICurrencyRepo;
+            
+            ICurrencyRepo repo = CreateInstance<ICurrencyRepo>(GetType());
             List<Coin> coins = CoinValsByType(this.GetType()).Cast<Coin>().ToList();
 
             // Sort the coins in descending order by value.

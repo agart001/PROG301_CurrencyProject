@@ -27,6 +27,7 @@ namespace PROG301_CurrencyProject.Models
         /// </summary>
         public Coin()
         {
+            Name = String.Empty;
             // Default constructor for the coin.
         }
 

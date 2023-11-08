@@ -66,14 +66,84 @@ namespace PROG301_CurrencyProject.Repos
         #region Make Change
 
         /// <summary>
-        /// Creates a new currency repository with change for a specified amount.
+        /// Creates a new currency repository with change, from the repository's available change, 
+        /// for a specified amount.
         /// </summary>
         /// <param name="Amount">The amount for which change needs to be made.</param>
         /// <returns>A new currency repository with the change for the specified amount.</returns>
         public ICurrencyRepo MakeChange(double Amount)
         {
             ICurrencyRepo repo = CreateInstance<ICurrencyRepo>(GetType());
-            List<Coin> coins = CoinValsByType(this.GetType()).Cast<Coin>().ToList();
+            List<Coin> coins = Coins.Cast<Coin>().ToList();
+
+            // Sort the coins in descending order by value.
+            coins.Sort((coin1, coin2) => -coin1.Value.CompareTo(coin2.Value));
+
+            int amountInCents = (int)(Amount * 100);
+
+            foreach (var coin in coins)
+            {
+                int coinValueInCents = (int)(coin.Value * 100);
+
+                if(amountInCents >= coinValueInCents)
+                {
+                    repo.AddCoin(coin);
+                    RemoveCoin(coin);
+                    amountInCents -= coinValueInCents;
+                }
+            }
+
+            return repo;
+        }
+
+        /// <summary>
+        /// Creates a new currency repository with change, from the repository's available change, 
+        /// for a given amount tendered and total cost.
+        /// </summary>
+        /// <param name="AmountTendered">The amount tendered by the customer.</param>
+        /// <param name="TotalCost">The total cost of the purchase.</param>
+        /// <returns>A new currency repository with the change for the given transaction.</returns>
+        public ICurrencyRepo MakeChange(double AmountTendered, double TotalCost)
+        {
+            double changeAmount = AmountTendered - TotalCost;
+
+            
+            ICurrencyRepo repo = CreateInstance<ICurrencyRepo>(GetType());
+            List<Coin> coins = Coins.Cast<Coin>().ToList();
+
+            // Sort the coins in descending order by value.
+            coins.Sort((coin1, coin2) => -coin1.Value.CompareTo(coin2.Value));
+
+            int amountInCents = (int)(changeAmount * 100);
+
+            foreach (var coin in coins)
+            {
+                int coinValueInCents = (int)(coin.Value * 100);
+
+                if(amountInCents >= coinValueInCents)
+                {
+                    repo.AddCoin(coin);
+                    RemoveCoin(coin);
+                    amountInCents -= coinValueInCents;
+                }
+            }
+
+            return repo;
+        }
+
+        #endregion
+
+        #region Create Change
+
+        /// <summary>
+        /// Creates a new currency repository with change for a specified amount.
+        /// </summary>
+        /// <param name="Amount">The amount for which change needs to be made.</param>
+        /// <returns>A new currency repository with the change for the specified amount.</returns>
+        public virtual ICurrencyRepo CreateChange(double Amount)
+        {
+            ICurrencyRepo repo = CreateInstance<ICurrencyRepo>(GetType());
+            List<Coin> coins = CoinValsByType(GetType()).Cast<Coin>().ToList();
 
             // Sort the coins in descending order by value.
             coins.Sort((coin1, coin2) => -coin1.Value.CompareTo(coin2.Value));
@@ -99,18 +169,18 @@ namespace PROG301_CurrencyProject.Repos
         }
 
         /// <summary>
-        /// Creates a new currency repository with change for a given amount tendered and total cost.
+        // Creates a new currency repository with change for a given amount tendered and total cost.
         /// </summary>
         /// <param name="AmountTendered">The amount tendered by the customer.</param>
         /// <param name="TotalCost">The total cost of the purchase.</param>
         /// <returns>A new currency repository with the change for the given transaction.</returns>
-        public ICurrencyRepo MakeChange(double AmountTendered, double TotalCost)
+        public virtual ICurrencyRepo CreateChange(double AmountTendered, double TotalCost)
         {
             double changeAmount = AmountTendered - TotalCost;
 
             
             ICurrencyRepo repo = CreateInstance<ICurrencyRepo>(GetType());
-            List<Coin> coins = CoinValsByType(this.GetType()).Cast<Coin>().ToList();
+            List<Coin> coins = CoinValsByType(GetType()).Cast<Coin>().ToList();
 
             // Sort the coins in descending order by value.
             coins.Sort((coin1, coin2) => -coin1.Value.CompareTo(coin2.Value));
@@ -134,25 +204,6 @@ namespace PROG301_CurrencyProject.Repos
 
             return repo;
         }
-
-        #endregion
-
-        #region Create Change
-
-        /// <summary>
-        /// Creates change for a specified amount using the MakeChange method.
-        /// </summary>
-        /// <param name="Amount">The amount for which change needs to be made.</param>
-        /// <returns>A new currency repository with the change for the specified amount.</returns>
-        public virtual ICurrencyRepo CreateChange(double Amount) => MakeChange(Amount);
-
-        /// <summary>
-        /// Creates change for a given amount tendered and total cost using the MakeChange method.
-        /// </summary>
-        /// <param name="AmountTendered">The amount tendered by the customer.</param>
-        /// <param name="TotalCost">The total cost of the purchase.</param>
-        /// <returns>A new currency repository with the change for the given transaction.</returns>
-        public virtual ICurrencyRepo CreateChange(double AmountTendered, double TotalCost) => MakeChange(AmountTendered, TotalCost);
 
         #endregion
     }

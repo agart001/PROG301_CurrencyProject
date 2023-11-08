@@ -24,23 +24,29 @@ namespace PROG301_CurrencyProject.Utility
             if (targetType.IsClass && targetType.GetConstructor(Type.EmptyTypes) != null)
             {
                 // Create an instance of the target class
-                object targetInstance = Activator.CreateInstance(targetType);
+                object? targetInstance = Activator.CreateInstance(targetType);
 
                 var methods = targetType.GetMethods();
 
                 // Get the method info
-                MethodInfo methodInfo = methods.Where(m => m.Name == methodName).FirstOrDefault();
+                MethodInfo? methodInfo = methods.Where(m => m.Name == methodName).FirstOrDefault();
 
                 // Check if the method exists and is accessible
                 if (methodInfo != null && methodInfo.IsPublic)
                 {
                     // Invoke the method and return its result
-                    object result = methodInfo.Invoke(targetInstance, methodParameters);
+                    object? result = methodInfo.Invoke(targetInstance, methodParameters);
+
+                    if (result == null)
+                    {
+                        throw new InvalidOperationException("The method invoke returned null.");
+                    }
+
                     var cast = (T)result;
 
                     if (cast != null)
                     {
-                        return (T)result;
+                        return cast;
                     }
                     else
                     {
@@ -73,13 +79,18 @@ namespace PROG301_CurrencyProject.Utility
             if (targetType.IsClass && targetType.GetConstructor(Type.EmptyTypes) != null)
             {
                 // Create an instance of the target class
-                object targetInstance = Activator.CreateInstance(targetType);
+                object? targetInstance = Activator.CreateInstance(targetType);
+
+                if (targetInstance == null)
+                {
+                    throw new InvalidOperationException("The target type could not be created.");
+                }
 
                 var cast = (T)targetInstance;
 
                 if (cast != null)
                 {
-                    return (T)targetInstance;
+                    return cast;
                 }
                 else
                 {

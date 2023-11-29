@@ -5,7 +5,7 @@ namespace PROG301_CurrencyProject.Utility
     /// <summary>
     /// A utility class for invoking methods on an instance of a specified type.
     /// </summary>
-    public static class Method_Utils
+    public static class MethodUtils
     {
         /// <summary>
         /// Invokes a method on an instance of a specified type and returns the result.

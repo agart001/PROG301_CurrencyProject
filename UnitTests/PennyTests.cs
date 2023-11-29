@@ -62,7 +62,7 @@ namespace UnitTests
             pennyAbout = p.About();
 
             // Assert
-            Assert.AreEqual("US Penny is from 2017. It is worth $0.01. It was made in Denver", pennyAbout);
+            Assert.AreEqual($"US Penny is from {DateTime.Now.Year}. It is worth $0.01. It was made in Denver", pennyAbout);
             // About output "US Penny is from 2017. It is worth $0.01. It was made in Denver"
         }
     }

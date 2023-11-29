@@ -1,7 +1,9 @@
 using PROG301_CurrencyProject.Interfaces;
+using PROG301_CurrencyProject.Models;
+using PROG301_CurrencyProject.Models.UKCoins;
+using PROG301_CurrencyProject.Models.USCoins;
 using PROG301_CurrencyProject.Repos;
-using static PROG301_CurrencyProject.Statics.Currency.US;
-using static PROG301_CurrencyProject.Utility.Method_Utils;
+using static PROG301_CurrencyProject.Utilities.TypeUtils;
 
 namespace PROG301_CurrencyProject.Statics
 {
@@ -16,46 +18,57 @@ namespace PROG301_CurrencyProject.Statics
         public struct CurRep
         {
             /// <summary>
-            /// An array that holds types of currency repositories.
+            /// A dictionary that maps currency repository types to their respective lists of ICoin objects.
             /// </summary>
-            public static Type[] Types = new Type[]
+            public static Dictionary<Type, List<ICoin>> RepoCoinDict = new Dictionary<Type, List<ICoin>>()
             {
-                typeof(USCurrencyRepo)
+                {typeof(USCurrencyRepo), GetDerivedCoins<USCoin>()},
+                {typeof(UKCurrencyRepo), GetDerivedCoins<UKCoin>()}
             };
 
             /// <summary>
-            /// Returns a list of coin values by the specified caller's type.
+            /// Gets a list of instances of types derived from a specified base type.
             /// </summary>
-            /// <param name="caller">The Type of the caller requesting coin values.</param>
-            /// <returns>A list of ICoin objects with values based on the caller's type.</returns>
-            public static List<ICoin> CoinValsByType(Type caller)
+            /// <typeparam name="T">The base type from which derived types are obtained.</typeparam>
+            /// <returns>A list of instances of types derived from <typeparamref name="T"/>.</returns>
+            /// <exception cref="Exception">Thrown when the creation of an instance of a derived type fails.</exception>
+            public static List<ICoin> GetDerivedCoins<T>()
             {
                 List<ICoin> coins = new List<ICoin>();
+                Type[] derivedTypes = GetSubclasses<T>();
 
-                // Check if the caller's type is one of the supported currency repository types.
-                if (Types.Contains(caller))
+                foreach (Type type in derivedTypes)
                 {
-                    if (caller == typeof(USCurrencyRepo))
-                    {
-                        // Handle US currency repository and populate the list with coin objects.
-                        HandleUSCurrencyRepo(coins);
-                    }
+                    ICoin coin = (ICoin)Activator.CreateInstance(type);
+
+                    if (coin is null) { throw new Exception("Failed to create instance of derived coin."); }
+
+                    coins.Add(coin);
                 }
 
                 return coins;
             }
 
+
             /// <summary>
-            /// Private method to handle US currency repository and create coin objects.
+            /// Returns a list of coin values by the specified caller's type.
             /// </summary>
-            /// <param name="coins">The list to populate with ICoin objects.</param>
-            private static void HandleUSCurrencyRepo(List<ICoin> coins)
+            /// <param name="caller">The Type of the CurrencyRepo requesting coin values.</param>
+            /// <returns>A list of ICoin objects with values based on the caller's type.</returns>
+            public static List<ICoin> CoinValsByType(Type caller)
             {
-                // Loop through USCoinValueDict and create ICoin objects for each coin type.
-                foreach (var kvp in USCoinValueDict)
+                List<Type> Types = new List<Type>(RepoCoinDict.Keys);
+
+                // Check if the caller's type is one of the supported currency repository types.
+                if (Types.Contains(caller))
                 {
-                    ICoin coin = CreateInstance<ICoin>(kvp.Key);
-                    coins.Add(coin);
+                    // If so, return the list of ICoin objects associated with the caller's type.
+                    return RepoCoinDict[caller];
+                }
+                else
+                {
+                    // Otherwise, throw an exception.
+                    throw new Exception("Invalid caller type.");
                 }
             }
         }

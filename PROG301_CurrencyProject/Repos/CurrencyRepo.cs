@@ -1,7 +1,7 @@
 ﻿using PROG301_CurrencyProject.Interfaces;
 using PROG301_CurrencyProject.Models;
 using static PROG301_CurrencyProject.Statics.Repos.CurRep;
-using static PROG301_CurrencyProject.Utility.Method_Utils;
+using static PROG301_CurrencyProject.Utility.MethodUtils;
 
 namespace PROG301_CurrencyProject.Repos
 {

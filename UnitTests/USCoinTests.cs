@@ -56,10 +56,10 @@ namespace UnitTests
             W = Currency.US.USCoinMintMark.W;
 
             // Assert
-            Assert.AreEqual(USCoin.GetMintNameFromMark(D), mintNameDenver);
-            Assert.AreEqual(USCoin.GetMintNameFromMark(P), mintNamePhili);
-            Assert.AreEqual(USCoin.GetMintNameFromMark(S), mintNameSanFran);
-            Assert.AreEqual(USCoin.GetMintNameFromMark(W), mintNameWestPoint);
+            Assert.AreEqual(Coin.GetMintNameFromMark(typeof(USCoin),D), mintNameDenver);
+            Assert.AreEqual(Coin.GetMintNameFromMark(typeof(USCoin),P), mintNamePhili);
+            Assert.AreEqual(Coin.GetMintNameFromMark(typeof(USCoin),S), mintNameSanFran);
+            Assert.AreEqual(Coin.GetMintNameFromMark(typeof(USCoin),W), mintNameWestPoint);
         }
 
         /// <summary>

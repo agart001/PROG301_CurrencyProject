@@ -1,4 +1,5 @@
-﻿using static PROG301_CurrencyProject.Statics.Currency.US;
+﻿using static PROG301_CurrencyProject.Statics.Currency;
+using static PROG301_CurrencyProject.Statics.Currency.US;
 
 namespace PROG301_CurrencyProject.Models
 {
@@ -21,6 +22,13 @@ namespace PROG301_CurrencyProject.Models
             Year = DateTime.Now.Year;
             Name = USCoinNameDict[GetType()];
             Value = USCoinValueDict[GetType()];
+
+            SetDesc
+            (
+                CurRegionDict[typeof(USCoin)], 
+                CurSymbolDict[typeof(USCoin)], 
+                USCoinMintMarkDict[MintMark]
+            );
         }
 
         /// <summary>
@@ -33,22 +41,13 @@ namespace PROG301_CurrencyProject.Models
             Year = DateTime.Now.Year;
             Name = USCoinNameDict[GetType()];
             Value = USCoinValueDict[GetType()];
+
+            SetDesc
+            (
+                CurRegionDict[typeof(USCoin)], 
+                CurSymbolDict[typeof(USCoin)], 
+                USCoinMintMarkDict[MintMark]
+            );
         }
-
-        /// <summary>
-        /// Provides information about the US coin.
-        /// </summary>
-        /// <returns>A string describing the US coin, including its name, year, value, and mint mark.</returns>
-        public override string About() =>
-            $"US {Name} is from {Year}. " +
-            $"It is worth {Value:C}. " +
-            $"It was made in {GetMintNameFromMark(MintMark)}";
-
-        /// <summary>
-        /// Gets the human-readable name of a US mint mark.
-        /// </summary>
-        /// <param name="mark">The USCoinMintMark to translate into a name.</param>
-        /// <returns>A string representing the name of the mint mark.</returns>
-        public static string GetMintNameFromMark(USCoinMintMark mark) => USCoinMintMarkDict[mark];
     }
 }

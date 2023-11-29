@@ -18,7 +18,6 @@ namespace PROG301_CurrencyProject.Models.USCoins
         /// <param name="mark">The mint mark of the Penny.</param>
         public Penny(USCoinMintMark mark) : base(mark)
         {
-            Year = 2017;
         }
     }
 }

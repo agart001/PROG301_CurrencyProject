@@ -1,7 +1,7 @@
 ﻿using PROG301_CurrencyProject.Interfaces;
 using PROG301_CurrencyProject.Models.USCoins;
 using PROG301_CurrencyProject.Repos;
-using static PROG301_CurrencyProject.Utility.Method_Utils;
+using static PROG301_CurrencyProject.Utility.MethodUtils;
 
 namespace UnitTests
 {
